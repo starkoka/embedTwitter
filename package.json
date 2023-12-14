@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/starkoka/embedTwitterOnDiscord/issues"
   },
-  "homepage": "https://github.com/starkoka/embedTwitterOnDiscord#readme"
+  "homepage": "https://github.com/starkoka/embedTwitterOnDiscord#readme",
+  "dependencies": {
+    "discord.js": "^14.14.1"
+  }
 }
