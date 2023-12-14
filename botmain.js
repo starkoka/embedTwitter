@@ -2,7 +2,6 @@ const { Client, GatewayIntentBits, Partials, Collection, Events} = require('disc
 const dotenv = require('dotenv');
 const path = require('path');
 const fs = require('fs');
-const cron = require('node-cron');
 dotenv.config();
 require('date-utils');
 global.client = new Client({
@@ -21,7 +20,8 @@ global.client = new Client({
 });
 
 //configファイル読み込み
-const config = require('./config.js')
+const config = require('./config.json');
+const system = require('./functions/logsystem.js')
 
 //スラッシュコマンド登録
 const commandsPath = path.join(__dirname, 'commands');
@@ -38,3 +38,5 @@ client.once("ready", async() => {
     }
     await system.log("Ready!");
 });
+
+client.login(config.token);
