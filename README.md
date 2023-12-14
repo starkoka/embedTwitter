@@ -1,0 +1,2 @@
+# embedTwitterOnDiscord
+twitter.comやx.comのリンクを自動でvxtwitter.comに書き換えて送信します
