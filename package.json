@@ -1,0 +1,19 @@
+{
+  "name": "embedtwitterondiscord",
+  "version": "0.0.0",
+  "description": "twitter.comやx.comのリンクを自動でvxtwitter.comに書き換えて送信します",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/starkoka/embedTwitterOnDiscord.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/starkoka/embedTwitterOnDiscord/issues"
+  },
+  "homepage": "https://github.com/starkoka/embedTwitterOnDiscord#readme"
+}
