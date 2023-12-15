@@ -39,4 +39,25 @@ client.once("ready", async() => {
     await system.log("Ready!");
 });
 
+client.on('messageCreate', async message => {
+    const twitter = new RegExp("//twitter.com/");
+    const xcom = new RegExp("//x.com/");
+    const vxtwitter = new RegExp("//vxtwitter.com/");
+
+    if(twitter.test(message.content) || xcom.test(message.content)){
+        let content = message.content;
+        while(vxtwitter.test(content)){
+            content = content.replace("//vxtwitter.com/","//hoge.hoge/");
+        }
+        while(twitter.test(content) || xcom.test(content)){
+            content = content.replace("//twitter.com","//vxtwitter.com/");
+            content = content.replace("//x.com/","//vxtwitter.com/");
+        }
+        if(vxtwitter.test(content)){
+            await message.channel.send(content);
+        }
+    }
+});
+
+
 client.login(config.token);
