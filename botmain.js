@@ -40,21 +40,38 @@ client.once("ready", async() => {
 });
 
 client.on('messageCreate', async message => {
-    const twitter = new RegExp("//twitter.com/");
-    const xcom = new RegExp("//x.com/");
-    const vxtwitter = new RegExp("//vxtwitter.com/");
+    const twitter = new RegExp("https?://twitter.com/");
+    const xcom = new RegExp("https?://x.com/");
+    const vxtwitter = new RegExp("https?://vxtwitter.com/");
+    const embedLink = new RegExp("^[-_.!~*'()a-zA-Z0-9;?:&=+$,%#]");
 
     if(twitter.test(message.content) || xcom.test(message.content)){
         let content = message.content;
         while(vxtwitter.test(content)){
-            content = content.replace("//vxtwitter.com/","//hoge.hoge/");
+            content = content.replace(twitter,"xxxxxxxxxxxxvxtwitterx");
         }
         while(twitter.test(content) || xcom.test(content)){
-            content = content.replace("//twitter.com","//vxtwitter.com/");
-            content = content.replace("//x.com/","//vxtwitter.com/");
+            content = content.replace(twitter,"https://vxtwitter.com/");
+            content = content.replace(xcom,"https://vxtwitter.com/");
         }
-        if(vxtwitter.test(content)){
-            await message.channel.send(content);
+
+        const lines = content.split(/\r\n|\r|\n/);
+        let url = [];
+        for(let l of lines){
+            url = url.concat(l.split(vxtwitter));
+        }
+
+        let msg = "";
+        let num=1;
+        for(let i=1;i<url.length;i++){
+            if(embedLink.test(url[i])){
+                msg += `[URL${num}](https://vxtwitter.com/${url[i]})\n`;
+                num++;
+            }
+        }
+
+        if(msg!==""){
+            await message.channel.send(msg);
         }
     }
 });
