@@ -40,6 +40,7 @@ client.once("ready", async() => {
 });
 
 client.on('messageCreate', async message => {
+    const nl = new RegExp("\n");
     const twitter = new RegExp("https?://twitter.com/");
     const xcom = new RegExp("https?://x.com/");
     const vxtwitter = new RegExp("https?://vxtwitter.com/");
@@ -47,6 +48,9 @@ client.on('messageCreate', async message => {
 
     if(twitter.test(message.content) || xcom.test(message.content)){
         let content = message.content;
+        while(nl.test(content)){
+            content = content.replace(nl,"");
+        }
         while(vxtwitter.test(content)){
             content = content.replace(twitter,"xxxxxxxxxxxxvxtwitterx");
         }
