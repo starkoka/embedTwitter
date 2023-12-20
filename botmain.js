@@ -44,10 +44,19 @@ client.on('messageCreate', async message => {
     const twitter = new RegExp("https?://twitter.com/");
     const xcom = new RegExp("https?://x.com/");
     const vxtwitter = new RegExp("https?://vxtwitter.com/");
-    const embedLink = new RegExp("^[-_.!~*'()a-zA-Z0-9;?:&=+$,%#]");
+    const embedLink = new RegExp("^[-_.!~*'a-zA-Z0-9;?:&=+$,%#]");
+    const specialChar = new RegExp("[()\[\]");
+
 
     if(twitter.test(message.content) || xcom.test(message.content)){
         let content = message.content;
+        content.replace('(','');
+        content.replace(')','');
+        content.replace('[','');
+        content.replace(']','');
+        while(specialChar.test(content)){
+            content = content.replace(specialChar,"");
+        }
         while(nl.test(content)){
             content = content.replace(nl,"");
         }
