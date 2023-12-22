@@ -80,7 +80,29 @@ client.on('messageCreate', async message => {
         }
 
         if(msg!==""){
-            await message.channel.send(msg);
+            try{
+                await message.channel.send(msg);
+            }
+            catch(err){
+               if(err.code!==50013){
+                   try{
+                       let guild,channel;
+                       if(!message.guildId) {
+                           guild = {name:"ダイレクトメッセージ",id:"---"};
+                           channel = {name:"---",id:"---"};
+                       }
+                       else{
+                           guild = client.guilds.cache.get(message.guildId) ?? await client.guilds.fetch(message.guildId);
+                           channel = client.channels.cache.get(message.channelId) ?? await client.channels.fetch(message.channelId);
+                       }
+                       await system.error(`権限不足等の要因でメッセージを送信できませんでした\`\`\`\nギルド　　：${guild.name}\n(ID:${guild.id})\n\nチャンネル：${channel.name}\n(ID:${channel.id})\n\nID　　　　：${message.id}\n\nユーザ　　：${message.author.globalName}${(message.author.discriminator==="0")?"":`#${message.author.discriminator}`}\n(ID:${message.author.id})\`\`\``,err,"メッセージ送信失敗");
+                   }
+                   catch{
+                       await system.error(`権限不足等の要因でメッセージを送信できませんでした`,err,"メッセージ送信失敗");
+                   }
+               }
+            }
+
         }
     }
 });
