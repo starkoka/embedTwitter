@@ -21,7 +21,8 @@ global.client = new Client({
 
 //configファイル読み込み
 const config = require('./config.json');
-const system = require('./functions/logsystem.js')
+const system = require('./functions/logsystem.js');
+const help = require("./functions/help.js");
 
 //スラッシュコマンド登録
 const commandsPath = path.join(__dirname, 'commands');
@@ -75,5 +76,19 @@ client.on("interactionCreate", async(interaction) => {
         }
     }
 });
+
+//StringSelectMenu受け取り
+client.on(Events.InteractionCreate, async interaction => {
+    if(interaction.isStringSelectMenu()) {
+        if (interaction.customId === "adminHelp"){
+            await help.adminHelpDisplay(interaction);
+        }
+        else if (interaction.customId === "help"){
+            await help.helpDisplay(interaction);
+        }
+    }
+});
+
+
 
 client.login(config.token);
