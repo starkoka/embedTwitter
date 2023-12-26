@@ -1,4 +1,4 @@
-# embedTwitterOnDiscord
+# embedTwitter
 twitter.comやx.comのリンクを自動でvxtwitter.comに書き換えて送信します
 
 動作には以下のconfig.jsonが必要です。

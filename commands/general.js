@@ -23,9 +23,9 @@ module.exports =
                     .setColor(0x00A0EA)
                     .setTitle('embedTwitter概要')
                     .setAuthor({
-                        name: "embedTwitterOnDiscord",
+                        name: "embedTwitter",
                         iconURL: 'https://avatars.githubusercontent.com/u/103174676',
-                        url: 'https://github.com/starkoka/embedTwitterOnDiscord'
+                        url: 'https://github.com/starkoka/embedTwitter'
                     })
                     .setDescription('このbotの概要を紹介します')
                     .addFields(
@@ -40,11 +40,11 @@ module.exports =
                             },
                             {
                                 name:"ソースコード",
-                                    value:"このBOTは、オープンソースとなっています。[GitHub](https://github.com/starkoka/embedTwitterOnDiscord)にて公開されています。\n"
+                                    value:"このBOTは、オープンソースとなっています。[GitHub](https://github.com/starkoka/embedTwitter)にて公開されています。\n"
                             },
                             {
                                 name:"バグの報告先",
-                                value:"[Issue](https://github.com/starkoka/embedTwitterOnDiscord/issues)までお願いします。\nサポート等の詳細は/helpを実行してください。\n"
+                                value:"[Issue](https://github.com/starkoka/embedTwitter/issues)までお願いします。\nサポート等の詳細は/helpを実行してください。\n"
                             },
                             {
                                 name: '実行環境',
