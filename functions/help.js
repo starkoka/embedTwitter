@@ -81,7 +81,7 @@ exports.helpSend = async function func(interaction) {
             iconURL: 'https://avatars.githubusercontent.com/u/103174676',
             url: 'https://github.com/starkoka/embedTwitterOnDiscord'
         })
-        .setDescription("embedTwitterをご利用いただきありがとうございます。\nヘルプでは、このBOTの機能の使い方等を確認できます。\n\n下のセレクトメニューから内容を選ぶことで、ヘルプを読めます。\n")
+        .setDescription("embedTwitterをご利用いただきありがとうございます。\nヘルプでは、このBOTの機能の使い方等を確認できます。\n\n下のセレクトメニューから内容を選ぶことで、内容を確認することができます。。\n")
         .setTimestamp()
         .setFooter({ text: 'Developed by kokastar' });
 

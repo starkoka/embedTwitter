@@ -46,10 +46,10 @@
             "value":"> Xserver VPSにてホストされています\n"
           },{
             "name":"サポート",
-            "value":"> 不明点等ありましたら、[Issue](https://github.com/starkoka/embedTwitterOnDiscord)にて質問してもらうか、DiscordでID:kokastarまでDMを送っていただければ、対応します。\n"
+            "value":"> 不明点等ありましたら、[Issue](https://github.com/starkoka/embedTwitterOnDiscord/issues)にて質問してもらうか、DiscordでID:kokastarまでDMを送っていただければ、対応します。\n"
           }, {
             "name":"バグの報告先",
-            "value":"> [Issue](https://github.com/NITKC-DEV/Kisarazu-Multi-Manager/issues)に書いてもらうか、サポートへ連絡をお願いします。\n"
+            "value":"> [Issue](https://github.com/starkoka/embedTwitterOnDiscord/issues)に書いてもらうか、サポートへ連絡をお願いします。\n"
           },{
             "name":"他のサーバーにも導入したい！",
             "value":"> 招待リンクは現在非公開です。近日公開予定です。\n"
