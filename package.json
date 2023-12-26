@@ -1,5 +1,5 @@
 {
-  "name": "embedtwitterondiscord",
+  "name": "embedtwitter",
   "version": "0.0.0",
   "description": "twitter.comやx.comのリンクを自動でvxtwitter.comに書き換えて送信します",
   "main": "index.js",
@@ -8,18 +8,19 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/starkoka/embedTwitterOnDiscord.git"
+    "url": "git+https://github.com/starkoka/embedTwitter.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/starkoka/embedTwitterOnDiscord/issues"
+    "url": "https://github.com/starkoka/embedTwitter/issues"
   },
-  "homepage": "https://github.com/starkoka/embedTwitterOnDiscord#readme",
+  "homepage": "https://github.com/starkoka/embedTwitter#readme",
   "dependencies": {
     "date-utils": "^1.2.21",
     "discord.js": "^14.14.1",
     "dotenv": "^16.3.1",
+    "enquirer": "^2.4.1",
     "fs": "^0.0.1-security",
     "path": "^0.12.7"
   }

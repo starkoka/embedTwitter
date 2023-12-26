@@ -21,7 +21,8 @@ global.client = new Client({
 
 //configファイル読み込み
 const config = require('./config.json');
-const system = require('./functions/logsystem.js')
+const system = require('./functions/logsystem.js');
+const help = require("./functions/help.js");
 
 //スラッシュコマンド登録
 const commandsPath = path.join(__dirname, 'commands');
@@ -38,6 +39,57 @@ client.once("ready", async() => {
     }
     await system.log("Ready!");
 });
+/*command処理*/
+client.on("interactionCreate", async(interaction) => {
+    if (!interaction.isCommand()) {
+        return;
+    }
+    const command = interaction.client.commands.get(interaction.commandName);
+
+    if (!command) return;
+    let guild,channel;
+    if(!interaction.guildId) {
+        guild = {name:"ダイレクトメッセージ",id:"---"};
+        channel = {name:"---",id:"---"};
+    }
+    else{
+        guild = client.guilds.cache.get(interaction.guildId) ?? await client.guilds.fetch(interaction.guildId);
+        channel = client.channels.cache.get(interaction.channelId) ?? await client.channels.fetch(interaction.channelId);
+    }
+    await system.log(`コマンド名:${command.data.name}\`\`\`\nギルド　　：${guild.name}\n(ID:${guild.id})\n\nチャンネル：${channel.name}\n(ID:${channel.id})\n\nユーザ　　：${interaction.user.username}${(interaction.user.discriminator==="0"?"":`#${interaction.user.discriminator}`)}\n(ID:${interaction.user.id})\`\`\``, "SlashCommand");
+    try {
+        await command.execute(interaction);
+    }
+    catch(error) {
+        await system.error(`スラッシュコマンド実行時エラー : ${command.data.name}\n\`\`\`\nギルド　　：${guild.name}\n(ID:${guild.id})\n\nチャンネル：${channel.name}\n(ID:${channel.id})\n\nユーザ　　：${interaction.user.username}${(interaction.user.discriminator==="0"?``:`#${interaction.user.discriminator}`)}\n(ID:${interaction.user.id})\`\`\``, error);
+        try {
+            await interaction.reply({content: 'おっと、想定外の事態が起きちゃった。[Issue](https://github.com/starkoka/embedTwitter/issues)に連絡してくれ。', ephemeral: true});
+        }
+        catch {
+            try{
+                await interaction.editReply({
+                    content: 'おっと、想定外の事態が起きちゃった。[Issue](https://github.com/starkoka/embedTwitter/issues)に連絡してくれ。',
+                    ephemeral: true
+                });
+            }
+            catch{} //edit先が消えてる可能性を考えてtryに入れる
+        }
+    }
+});
+
+//StringSelectMenu受け取り
+client.on(Events.InteractionCreate, async interaction => {
+    if(interaction.isStringSelectMenu()) {
+        if (interaction.customId === "adminHelp"){
+            await help.adminHelpDisplay(interaction);
+        }
+        else if (interaction.customId === "help"){
+            await help.helpDisplay(interaction);
+        }
+    }
+});
+
+
 
 client.on('messageCreate', async message => {
     const nl = new RegExp("\n");

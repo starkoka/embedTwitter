@@ -1,0 +1,64 @@
+{
+  "help": [
+    {
+      "shortDescription": "このBOTの機能の説明です",
+      "value": {
+        "title": "機能説明",
+        "description":"Twitter(X)のリンクを送信した時、埋め込みでその内容を表示します。\nTwitterの仕様変更によりツイート内容が見れなくなった事象に対応するものです。",
+        "field":[
+          {
+            "name":"原理",
+            "value":"> もともとのリンクのtwitter.comやx.comをvxtwitter.comに置き換えることで埋め込みが表示されるようになります。このbotは自分で書き換える手間を省いてくれます。\n"
+          }, {
+            "name":"仕様",
+            "value":"> ツイートやプロフィールのリンクの場合に反応します。また、元からvxtwitter.comだったにものは反応しません。\n> 複数リンクにも対応し、改行で分断されてしまっても正常に表示されます。"
+          }
+        ]
+      }
+    },
+    {
+      "shortDescription": "ユーザーデータの取扱い関する情報です",
+      "value": {
+        "title": "ユーザーデータ",
+        "description":"このBOTは以下のデータを取得・記録します\n",
+        "field":[
+          {
+            "name":"送信されたメッセージ",
+            "value":"> 閲覧権限のあるチャンネルに送信されたメッセージの内容、送信者(ユーザーID)、送信場所(サーバーID、チャンネルID)を取得します。エラー発生時には送信されたサーバーやチャンネル、送信したユーザーがログデータとして記録されますが、メッセージの内容が記録されることはありません。\n"
+          }, {
+            "name":"スラッシュコマンド実行データ",
+            "value":"> スラッシュコマンドが実行された時、実行したコマンドとともに実行したユーザーIDと場所(サーバーID、チャンネルID)がログデータとして記録されます。"
+          }
+        ]
+      }
+    },
+    {
+      "shortDescription": "BOTの運営とサポートについてです。",
+      "value": {
+        "title": "BOTの運営とサポート",
+        "description":"BOTの運営とサポートは、下記のとおりです。\n",
+        "field":[
+          {
+            "name":"ソースコード",
+            "value":"> このBOTは、オープンソースとなっています。[GitHub](https://github.com/starkoka/embedTwitter)にて公開されています。\n"
+          },{
+            "name":"ホストサーバーについて",
+            "value":"> Xserver VPSにてホストされています\n"
+          },{
+            "name":"サポート",
+            "value":"> 不明点等ありましたら、[Issue](https://github.com/starkoka/embedTwitter/issues)にて質問してもらうか、DiscordでID:kokastarまでDMを送っていただければ、対応します。\n"
+          }, {
+            "name":"バグの報告先",
+            "value":"> [Issue](https://github.com/starkoka/embedTwitter/issues)に書いてもらうか、サポートへ連絡をお願いします。\n"
+          },{
+            "name":"他のサーバーにも導入したい！",
+            "value":"> 招待リンクは現在非公開です。近日公開予定です。\n"
+          }
+        ]
+      }
+    }
+  ],
+  "admin": [
+
+  ]
+}
