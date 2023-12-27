@@ -133,7 +133,8 @@ client.on('messageCreate', async message => {
 
         if(msg!==""){
             try{
-                await message.channel.send(msg);
+                const embed = await message.channel.send(msg);
+                await embed.react('❌');
             }
             catch(err){
                if(err.code!==50013){
@@ -158,6 +159,16 @@ client.on('messageCreate', async message => {
         }
     }
 });
+
+client.on('messageReactionAdd', async reaction => {
+    if (reaction.message.author.id === config.client && reaction.users._cache.get(config.client) && reaction.users._cache.size > 1 && reaction._emoji.name === '❌') {
+        try {
+            await reaction.message.delete();
+        } catch (err) {
+            await system.error(`メッセージの削除に失敗しました`, err, "メッセージ削除失敗");
+        }
+    }
+})
 
 
 client.login(config.token);
