@@ -7,14 +7,9 @@ require('date-utils');
 global.client = new Client({
     intents: [
         GatewayIntentBits.Guilds,
-        GatewayIntentBits.GuildVoiceStates,
-        GatewayIntentBits.GuildMembers,
         GatewayIntentBits.GuildMessages,
         GatewayIntentBits.GuildMessageReactions,
         GatewayIntentBits.MessageContent,
-        GatewayIntentBits.GuildPresences,
-        GatewayIntentBits.DirectMessageReactions,
-        GatewayIntentBits.GuildMessageReactions
     ],
     partials: [Partials.Channel],
 });
