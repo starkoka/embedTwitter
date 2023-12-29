@@ -1,6 +1,6 @@
 {
   "name": "embedtwitter",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "twitter.comやx.comのリンクを自動でvxtwitter.comに書き換えて送信します",
   "main": "index.js",
   "scripts": {
