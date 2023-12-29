@@ -58,7 +58,7 @@
             "value":"> [Issue](https://github.com/starkoka/embedTwitter/issues)に書いてもらうか、サポートへ連絡をお願いします。\n"
           },{
             "name":"他のサーバーにも導入したい！",
-            "value":"> 招待リンクは現在非公開です。近日公開予定です。\n"
+            "value":"> [こちらのリンク](https://discord.com/api/oauth2/authorize?client_id=1184735822331785268&permissions=2147503168&scope=bot)から招待できます\n"
           }
         ]
       }
