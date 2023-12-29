@@ -2,6 +2,7 @@ const { Client, GatewayIntentBits, Partials, Collection, Events} = require('disc
 const dotenv = require('dotenv');
 const path = require('path');
 const fs = require('fs');
+const cron = require('node-cron');
 dotenv.config();
 require('date-utils');
 global.client = new Client({
@@ -33,6 +34,11 @@ client.once("ready", async() => {
         }
     }
     await system.log("Ready!");
+    client.user.setPresence({
+        activities: [{
+            name: `導入数：${client.guilds.cache.size}サーバー`
+        }],
+    });
 });
 /*command処理*/
 client.on("interactionCreate", async(interaction) => {
@@ -164,6 +170,15 @@ client.on('messageReactionAdd', async reaction => {
         }
     }
 })
+
+/*ステータス更新*/
+cron.schedule('* * * * *', async () => {
+    client.user.setPresence({
+        activities: [{
+            name: `導入数：${client.guilds.cache.size}サーバー`
+        }],
+    });
+});
 
 
 client.login(config.token);
