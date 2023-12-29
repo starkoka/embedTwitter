@@ -99,6 +99,7 @@ client.on('messageCreate', async message => {
         try{
             const embed = await message.channel.send(msg);
             await embed.react('❌');
+            await message.react('🔄');
         }
         catch(err){
             if(err.code!==50013){
@@ -131,11 +132,15 @@ client.on('messageReactionAdd', async reaction => {
             await system.error(`メッセージの削除に失敗しました`, err, "メッセージ削除失敗");
         }
     }
-    else if(reaction._emoji.name === '⭕'){
+    else if(reaction._emoji.name === '🔄' && !(reaction.users._cache.get(config.client) && reaction.users._cache.size === 1)){
         const msg = makeTxt.make(reaction.message.content);
         if(msg!==""){
             try{
-                await reaction.message.reply(msg);
+                const embed = await reaction.message.reply({
+                    content:msg,
+                    allowedMentions:{parse:[]}
+                });
+                await embed.react('❌');
             }
             catch(err){
                 if(err.code!==50013){
