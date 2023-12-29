@@ -24,7 +24,7 @@ module.exports =
                     .setTitle('embedTwitter概要')
                     .setAuthor({
                         name: "embedTwitter",
-                        iconURL: 'https://avatars.githubusercontent.com/u/103174676',
+                        iconURL: 'https://cdn.discordapp.com/avatars/1184735822331785268/18239fc70cc5164a68c1672f4b469745.webp?size=160',
                         url: 'https://github.com/starkoka/embedTwitter'
                     })
                     .setDescription('このbotの概要を紹介します')
