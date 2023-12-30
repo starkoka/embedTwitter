@@ -98,7 +98,7 @@ client.on('messageCreate', async message => {
     if(msg!==""){
         try{
             const embed = await message.channel.send(msg);
-            await embed.react('❌');
+            await embed.react('🗑️');
             await message.react('🔄');
         }
         catch(err){
@@ -125,7 +125,7 @@ client.on('messageCreate', async message => {
 });
 
 client.on('messageReactionAdd', async reaction => {
-    if (reaction.message.author.id === config.client && reaction.users._cache.get(config.client) && reaction.users._cache.size > 1 && reaction._emoji.name === '❌') {
+    if (reaction.message.author.id === config.client && reaction.users._cache.get(config.client) && reaction.users._cache.size > 1 && reaction._emoji.name === '🗑️') {
         try {
             await reaction.message.delete();
         } catch (err) {
@@ -140,7 +140,7 @@ client.on('messageReactionAdd', async reaction => {
                     content:msg,
                     allowedMentions:{parse:[]}
                 });
-                await embed.react('❌');
+                await embed.react('🗑️');
             }
             catch(err){
                 if(err.code!==50013){
