@@ -1,6 +1,7 @@
 
 
-exports.make = function func(content){
+exports.make = function func(message){
+    let content = message.content;
     const nl = new RegExp("\n");
     const twitter = new RegExp("https?://twitter.com/");
     const xcom = new RegExp("https?://x.com/");
