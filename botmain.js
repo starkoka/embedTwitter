@@ -1,4 +1,4 @@
-const { Client, GatewayIntentBits, Partials, Collection, Events} = require('discord.js');
+const { Client, GatewayIntentBits, Partials, Collection, Events, PermissionsBitField} = require('discord.js');
 const dotenv = require('dotenv');
 const path = require('path');
 const fs = require('fs');
@@ -124,6 +124,8 @@ client.on('messageCreate', async message => {
 });
 
 client.on('messageReactionAdd', async reaction => {
+    const reactions = Array.from(reaction.users._cache.keys());
+    const reactionUser = reactions[reactions.length-1];
     if (reaction.message.author.id === config.client && reaction.users._cache.get(config.client) && reaction.users._cache.size > 1 && reaction._emoji.name === '🗑️') {
         try {
             const msg = reaction.message.content;
@@ -131,24 +133,23 @@ client.on('messageReactionAdd', async reaction => {
             const channelId = msg.substr(msg.indexOf('い')+1,msg.indexOf('う')-msg.indexOf('い')-1);
             const guildId = msg.substr(msg.indexOf('う')+1,msg.indexOf('え')-msg.indexOf('う')-1);
             const makeUserId = msg.substr(msg.indexOf('え')+1,msg.indexOf('お')-msg.indexOf('え')-1);
-
             const userMsg = await reaction.message.channel.messages.fetch(msgId);
-            await userMsg.react('🔄');
-            if(!reaction.users._cache.get(makeUserId)){
+
+
+            const guild = client.guilds.cache.get(guildId) ?? await client.guilds.fetch.get(guildId);
+            const member = guild.members.cache.get(reactionUser) ?? await guild.members.fetch(reactionUser);
+
+            if(!member.permissions.has(PermissionsBitField.Flags.ManageMessages) && !reaction.users._cache.get(makeUserId)){
                 return;
             }
             await reaction.message.delete();
-        } catch {
-            try {
-                await reaction.message.delete();
-            } catch (err) {
-                await system.error(`メッセージの削除に失敗しました`, err, "メッセージ削除失敗");
-            }
+            await userMsg.react('🔄');
+        } catch (err) {
+            await system.error(`メッセージの削除に失敗しました`, err, "メッセージ削除失敗");
         }
     }
     else if(reaction._emoji.name === '🔄' && !(reaction.users._cache.get(config.client) && reaction.users._cache.size === 1)){
-        const reactions = Array.from(reaction.users._cache.keys());
-        const msg = makeTxt.make(reaction.message,reactions[reactions.length-1]);
+        const msg = makeTxt.make(reaction.message,reactionUser);
         if(msg!==""){
             try{
                 const embed = await reaction.message.reply({
