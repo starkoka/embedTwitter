@@ -33,9 +33,16 @@ exports.make = function func(message){
 
         let msg = "";
         let num=1;
+        let flag = true;
         for(let i=1;i<url.length;i++){
             if(embedLink.test(url[i])){
-                msg += `[URL${num}](https://vxtwitter.com/${url[i]})\n`;
+                if(flag){
+                    flag = false;
+                    msg += `[URL${num}](https://vxtwitter.com/${url[i]}あ${message.id}い${message.channelId}う${message.guildId}え)\n`;
+                }
+                else{
+                    msg += `[URL${num}](https://vxtwitter.com/${url[i]})\n`;
+                }
                 num++;
             }
         }
