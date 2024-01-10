@@ -99,7 +99,7 @@ client.on('messageCreate', async message => {
         try{
             const embed = await message.channel.send(msg);
             await embed.react('🗑️');
-            await message.react('🔄');
+            //await message.react('🔄');
         }
         catch(err){
             if(err.code!==50013){
@@ -127,9 +127,23 @@ client.on('messageCreate', async message => {
 client.on('messageReactionAdd', async reaction => {
     if (reaction.message.author.id === config.client && reaction.users._cache.get(config.client) && reaction.users._cache.size > 1 && reaction._emoji.name === '🗑️') {
         try {
+            const msg = reaction.message.content;
+            const msgId = msg.substr(msg.indexOf('あ')+1,msg.indexOf('い')-msg.indexOf('あ')-1);
+            const channelId = msg.substr(msg.indexOf('い')+1,msg.indexOf('う')-msg.indexOf('い')-1);
+            const guildId = msg.substr(msg.indexOf('う')+1,msg.indexOf('え')-msg.indexOf('う')-1);
+
+            const userMsg = await reaction.message.channel.messages.fetch(msgId);
+            await userMsg.react('🔄');
+            if(!reaction.users._cache.get(userMsg.author.id)){
+                return;
+            }
             await reaction.message.delete();
-        } catch (err) {
-            await system.error(`メッセージの削除に失敗しました`, err, "メッセージ削除失敗");
+        } catch {
+            try {
+                await reaction.message.delete();
+            } catch (err) {
+                await system.error(`メッセージの削除に失敗しました`, err, "メッセージ削除失敗");
+            }
         }
     }
     else if(reaction._emoji.name === '🔄' && !(reaction.users._cache.get(config.client) && reaction.users._cache.size === 1)){
