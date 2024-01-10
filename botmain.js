@@ -130,10 +130,11 @@ client.on('messageReactionAdd', async reaction => {
             const msgId = msg.substr(msg.indexOf('あ')+1,msg.indexOf('い')-msg.indexOf('あ')-1);
             const channelId = msg.substr(msg.indexOf('い')+1,msg.indexOf('う')-msg.indexOf('い')-1);
             const guildId = msg.substr(msg.indexOf('う')+1,msg.indexOf('え')-msg.indexOf('う')-1);
+            const makeUserId = msg.substr(msg.indexOf('え')+1,msg.indexOf('お')-msg.indexOf('え')-1);
 
             const userMsg = await reaction.message.channel.messages.fetch(msgId);
             await userMsg.react('🔄');
-            if(!reaction.users._cache.get(userMsg.author.id)){
+            if(!reaction.users._cache.get(makeUserId)){
                 return;
             }
             await reaction.message.delete();
