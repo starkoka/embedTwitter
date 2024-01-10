@@ -1,6 +1,6 @@
 
 
-exports.make = function func(message){
+exports.make = function func(message,user){
     let content = message.content;
     const nl = new RegExp("\n");
     const twitter = new RegExp("https?://twitter.com/");
@@ -38,7 +38,7 @@ exports.make = function func(message){
             if(embedLink.test(url[i])){
                 if(flag){
                     flag = false;
-                    msg += `[URL${num}](https://vxtwitter.com/${url[i]}あ${message.id}い${message.channelId}う${message.guildId}え)\n`;
+                    msg += `[URL${num}](https://vxtwitter.com/${url[i]}あ${message.id}い${message.channelId}う${message.guildId}え${user}お)\n`;
                 }
                 else{
                     msg += `[URL${num}](https://vxtwitter.com/${url[i]})\n`;

@@ -94,12 +94,11 @@ client.on(Events.InteractionCreate, async interaction => {
 
 
 client.on('messageCreate', async message => {
-    const msg = makeTxt.make(message);
+    const msg = makeTxt.make(message,message.author.id);
     if(msg!==""){
         try{
             const embed = await message.channel.send(msg);
             await embed.react('🗑️');
-            //await message.react('🔄');
         }
         catch(err){
             if(err.code!==50013){
@@ -147,7 +146,8 @@ client.on('messageReactionAdd', async reaction => {
         }
     }
     else if(reaction._emoji.name === '🔄' && !(reaction.users._cache.get(config.client) && reaction.users._cache.size === 1)){
-        const msg = makeTxt.make(reaction.message);
+        const reactions = Array.from(reaction.users._cache.keys());
+        const msg = makeTxt.make(reaction.message,reactions[reactions.length-1]);
         if(msg!==""){
             try{
                 const embed = await reaction.message.reply({
