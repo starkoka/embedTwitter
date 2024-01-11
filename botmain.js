@@ -1,4 +1,4 @@
-const { Client, GatewayIntentBits, Partials, Collection, Events} = require('discord.js');
+const { Client, GatewayIntentBits, Partials, Collection, Events, PermissionsBitField} = require('discord.js');
 const dotenv = require('dotenv');
 const path = require('path');
 const fs = require('fs');
@@ -19,6 +19,7 @@ global.client = new Client({
 const config = require('./config.json');
 const system = require('./functions/logsystem.js');
 const help = require("./functions/help.js");
+const makeTxt = require("./functions/makeTxt.js");
 
 //スラッシュコマンド登録
 const commandsPath = path.join(__dirname, 'commands');
@@ -93,80 +94,89 @@ client.on(Events.InteractionCreate, async interaction => {
 
 
 client.on('messageCreate', async message => {
-    const nl = new RegExp("\n");
-    const twitter = new RegExp("https?://twitter.com/");
-    const xcom = new RegExp("https?://x.com/");
-    const vxtwitter = new RegExp("https?://vxtwitter.com/");
-    const embedLink = new RegExp("[-_.!~*'a-zA-Z0-9;?:&=+$,%#]");
-    const specialChar = new RegExp("[^-_.!~*'a-zA-Z0-9;?:&=+$,%#/]");
-
-
-    if(twitter.test(message.content) || xcom.test(message.content)){
-        let content = message.content;
-        while(specialChar.test(content)){
-            content = content.replace(specialChar,"");
+    const msg = makeTxt.make(message,message.author.id);
+    if(msg!==""){
+        try{
+            const embed = await message.channel.send(msg);
+            await embed.react('🗑️');
         }
-        while(nl.test(content)){
-            content = content.replace(nl,"");
-        }
-        while(vxtwitter.test(content)){
-            content = content.replace(twitter,"xxxxxxxxxxxxvxtwitterx");
-        }
-        while(twitter.test(content) || xcom.test(content)){
-            content = content.replace(twitter,"https://vxtwitter.com/");
-            content = content.replace(xcom,"https://vxtwitter.com/");
-        }
-
-        const lines = content.split(/\r\n|\r|\n/);
-        let url = [];
-        for(let l of lines){
-            url = url.concat(l.split(vxtwitter));
-        }
-
-        let msg = "";
-        let num=1;
-        for(let i=1;i<url.length;i++){
-            if(embedLink.test(url[i])){
-                msg += `[URL${num}](https://vxtwitter.com/${url[i]})\n`;
-                num++;
+        catch(err){
+            if(err.code!==50013){
+                try{
+                    let guild,channel;
+                    if(!message.guildId) {
+                        guild = {name:"ダイレクトメッセージ",id:"---"};
+                        channel = {name:"---",id:"---"};
+                    }
+                    else{
+                        guild = client.guilds.cache.get(message.guildId) ?? await client.guilds.fetch(message.guildId);
+                        channel = client.channels.cache.get(message.channelId) ?? await client.channels.fetch(message.channelId);
+                    }
+                    await system.error(`権限不足等の要因でメッセージを送信できませんでした\`\`\`\nギルド　　：${guild.name}\n(ID:${guild.id})\n\nチャンネル：${channel.name}\n(ID:${channel.id})\n\nID　　　　：${message.id}\n\nユーザ　　：${message.author.globalName}${(message.author.discriminator==="0")?"":`#${message.author.discriminator}`}\n(ID:${message.author.id})\`\`\``,err,"メッセージ送信失敗");
+                }
+                catch{
+                    await system.error(`権限不足等の要因でメッセージを送信できませんでした`,err,"メッセージ送信失敗");
+                }
             }
         }
 
-        if(msg!==""){
-            try{
-                const embed = await message.channel.send(msg);
-                await embed.react('❌');
-            }
-            catch(err){
-               if(err.code!==50013){
-                   try{
-                       let guild,channel;
-                       if(!message.guildId) {
-                           guild = {name:"ダイレクトメッセージ",id:"---"};
-                           channel = {name:"---",id:"---"};
-                       }
-                       else{
-                           guild = client.guilds.cache.get(message.guildId) ?? await client.guilds.fetch(message.guildId);
-                           channel = client.channels.cache.get(message.channelId) ?? await client.channels.fetch(message.channelId);
-                       }
-                       await system.error(`権限不足等の要因でメッセージを送信できませんでした\`\`\`\nギルド　　：${guild.name}\n(ID:${guild.id})\n\nチャンネル：${channel.name}\n(ID:${channel.id})\n\nID　　　　：${message.id}\n\nユーザ　　：${message.author.globalName}${(message.author.discriminator==="0")?"":`#${message.author.discriminator}`}\n(ID:${message.author.id})\`\`\``,err,"メッセージ送信失敗");
-                   }
-                   catch{
-                       await system.error(`権限不足等の要因でメッセージを送信できませんでした`,err,"メッセージ送信失敗");
-                   }
-               }
-            }
-
-        }
     }
 });
 
 client.on('messageReactionAdd', async reaction => {
-    if (reaction.message.author.id === config.client && reaction.users._cache.get(config.client) && reaction.users._cache.size > 1 && reaction._emoji.name === '❌') {
+    const reactions = Array.from(reaction.users._cache.keys());
+    const reactionUser = reactions[reactions.length-1];
+    if (reaction.message.author.id === config.client && reaction.users._cache.get(config.client) && reaction.users._cache.size > 1 && reaction._emoji.name === '🗑️') {
         try {
+            const msg = reaction.message.content;
+            const msgId = msg.substr(msg.indexOf('あ')+1,msg.indexOf('い')-msg.indexOf('あ')-1);
+            const channelId = msg.substr(msg.indexOf('い')+1,msg.indexOf('う')-msg.indexOf('い')-1);
+            const guildId = msg.substr(msg.indexOf('う')+1,msg.indexOf('え')-msg.indexOf('う')-1);
+            const makeUserId = msg.substr(msg.indexOf('え')+1,msg.indexOf('お')-msg.indexOf('え')-1);
+            const userMsg = await reaction.message.channel.messages.fetch(msgId);
+
+
+            const guild = client.guilds.cache.get(guildId) ?? await client.guilds.fetch.get(guildId);
+            const member = guild.members.cache.get(reactionUser) ?? await guild.members.fetch(reactionUser);
+
+            if(!member.permissions.has(PermissionsBitField.Flags.ManageMessages) && !reaction.users._cache.get(makeUserId)){
+                return;
+            }
             await reaction.message.delete();
+            await userMsg.react('🔄');
         } catch (err) {
             await system.error(`メッセージの削除に失敗しました`, err, "メッセージ削除失敗");
+        }
+    }
+    else if(reaction._emoji.name === '🔄' && !(reaction.users._cache.get(config.client) && reaction.users._cache.size === 1)){
+        const msg = makeTxt.make(reaction.message,reactionUser);
+        if(msg!==""){
+            try{
+                const embed = await reaction.message.reply({
+                    content:msg,
+                    allowedMentions:{parse:[]}
+                });
+                await embed.react('🗑️');
+            }
+            catch(err){
+                if(err.code!==50013){
+                    try{
+                        let guild,channel;
+                        if(!message.guildId) {
+                            guild = {name:"ダイレクトメッセージ",id:"---"};
+                            channel = {name:"---",id:"---"};
+                        }
+                        else{
+                            guild = client.guilds.cache.get(message.guildId) ?? await client.guilds.fetch(message.guildId);
+                            channel = client.channels.cache.get(message.channelId) ?? await client.channels.fetch(message.channelId);
+                        }
+                        await system.error(`権限不足等の要因でメッセージを送信できませんでした\`\`\`\nギルド　　：${guild.name}\n(ID:${guild.id})\n\nチャンネル：${channel.name}\n(ID:${channel.id})\n\nID　　　　：${message.id}\n\nユーザ　　：${message.author.globalName}${(message.author.discriminator==="0")?"":`#${message.author.discriminator}`}\n(ID:${message.author.id})\`\`\``,err,"メッセージ送信失敗");
+                    }
+                    catch{
+                        await system.error(`権限不足等の要因でメッセージを送信できませんでした`,err,"メッセージ送信失敗");
+                    }
+                }
+            }
         }
     }
 })
